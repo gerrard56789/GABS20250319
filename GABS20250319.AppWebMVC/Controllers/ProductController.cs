@@ -18,12 +18,50 @@ namespace GABS20250319.AppWebMVC.Controllers
             _context = context;
         }
 
-
-        // GET: Product
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Product Product, int topRegistro = 10)
         {
-            var test20250319DbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
-            return View(await test20250319DbContext.ToListAsync());
+            try
+            {
+                var query = _context.Products.AsQueryable();
+                if (!string.IsNullOrWhiteSpace(Product.ProductName))
+                    query = query.Where(p => p.ProductName.Contains(Product.ProductName));
+
+                if (!string.IsNullOrWhiteSpace(Product.Description))
+                    query = query.Where(p => p.Description.Contains(Product.Description));
+
+                if (Product.BrandId > 0)
+                    query = query.Where(p => p.BrandId == Product.BrandId);
+
+                if (Product.CategoryId > 0)
+                    query = query.Where(p => p.CategoryId == Product.CategoryId);
+
+                query = query.Take(topRegistro);
+
+
+                query = query.Include(p => p.Category)
+                             .Include(p => p.Brand);
+
+
+                var productos = await query.ToListAsync();
+
+
+                var marcas = _context.Brands.ToList();
+                marcas.Insert(0, new Brand { BrandName = "SELECCIONAR", BrandId = 0 });
+
+                var categorias = _context.Categories.ToList();
+                categorias.Insert(0, new Category { CategoryName = "SELECCIONAR", CategoryId = 0 });
+
+                ViewData["CategoryId"] = new SelectList(categorias, "CategoryId", "CategoryName", 0);
+                ViewData["BrandId"] = new SelectList(marcas, "BrandId", "BrandName", 0);
+
+                return View(productos);
+            }
+            catch (Exception ex)
+            {
+
+                ViewBag.ErrorMessage = "Ha ocurrido un error al cargar los productos.";
+                return View(new List<Product>());
+            }
         }
 
         // GET: Product/Details/5

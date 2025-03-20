@@ -1,8 +1,6 @@
-﻿@model IEnumerable<GABS20250319.AppWebMVC.Models.Product>
+﻿
+@model IEnumerable<GABS20250319.AppWebMVC.Models.Product>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 <h1>Buscar productos</h1>
 <form asp-action="Index">
@@ -10,13 +8,13 @@
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" />
+                <input type="text" name="ProductName" class="form-control" />
             </div>
         </div>
         <div class="col-8">
             <div class="form-group">
                 <label class="control-label">Descripcion</label>
-                <textarea name="descripcion" class="form-control"></textarea>
+                <textarea name="Description" class="form-control"></textarea>
             </div>
         </div>
 
@@ -25,13 +23,13 @@
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Marcas</label>
-                <select name="marcaId" class="form-control" asp-items="ViewBag.MarcaId"></select>
+                <select name="brandId" class="form-control" asp-items="ViewBag.BrandId"></select>
             </div>
         </div>
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Categorias</label>
-                <select name="categoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
+                <select name="categoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
         </div>
         <div class="col-4">
@@ -56,14 +54,8 @@
         </div>
     </div>
 </form>
-
-
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<table class="table" id="mytable">
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ProductName)
@@ -83,7 +75,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="border border-dark" ,class="table table-striped">
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -102,12 +94,22 @@
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    <a asp-action="Edit" class="btn btn-secondary" asp-route-id="@item.ProductId">Editar</a> |
+                    <a asp-action="Details" class="btn btn-info" asp-route-id="@item.ProductId">Detalles</a> |
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.ProductId">Eliminar</a>
             </td>
         </tr>
 }
 
+
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+            $('#mytable').DataTable();
+        });
+    </script>
+}
+
