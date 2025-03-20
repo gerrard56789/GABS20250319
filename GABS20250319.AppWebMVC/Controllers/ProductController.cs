@@ -18,6 +18,7 @@ namespace GABS20250319.AppWebMVC.Controllers
             _context = context;
         }
 
+
         // GET: Product
         public async Task<IActionResult> Index()
         {
