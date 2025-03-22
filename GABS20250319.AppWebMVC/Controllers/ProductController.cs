@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GABS20250319.AppWebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GABS20250319.AppWebMVC.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
+
         private readonly Test20250319DbContext _context;
 
         public ProductController(Test20250319DbContext context)

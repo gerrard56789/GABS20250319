@@ -15,6 +15,7 @@ using System.Security.Claims;
 
 namespace GABS20250319.AppWebMVC.Controllers
 {
+    [Authorize(Roles = "ADMINISTRADOR")]
     public class UserController : Controller
     {
         private readonly Test20250319DbContext _context;
@@ -63,6 +64,7 @@ namespace GABS20250319.AppWebMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.PasswordHash = CalcularHashMD5(user.PasswordHash);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,17 +88,17 @@ namespace GABS20250319.AppWebMVC.Controllers
         [AllowAnonymous]
         [HttpPost]
 
-        public async Task<IActionResult> Login(User users)
+        public async Task<IActionResult> Login(User user)
         {
-            users.PasswordHash = CalcularHashMD5(users.PasswordHash);
+            user.PasswordHash = CalcularHashMD5(user.PasswordHash);
             var usuarioAuth = await _context.
                 Users.
-                FirstOrDefaultAsync(s => s.Email == users.Email && s.PasswordHash == users.PasswordHash);
-            if (usuarioAuth != null && usuarioAuth.UserId > 0 && usuarioAuth.Email == users.Email)
+                FirstOrDefaultAsync(s => s.Email == user.Email && s.PasswordHash == user.PasswordHash);
+            if (usuarioAuth != null && usuarioAuth.UserId > 0 && usuarioAuth.Email == user.Email)
             {
                 var claims = new[] {
                     new Claim(ClaimTypes.Name, usuarioAuth.Email),
-                    new Claim("UsersId", usuarioAuth.UserId.ToString()),
+                    new Claim("UserId", usuarioAuth.UserId.ToString()),
                      new Claim("UserName", usuarioAuth.Username),
                     new Claim(ClaimTypes.Role, usuarioAuth.Role)
                     };
@@ -148,7 +150,7 @@ namespace GABS20250319.AppWebMVC.Controllers
                     usuarioUpdate.Username = user.Username;
                     usuarioUpdate.Email = user.Email;
                     usuarioUpdate.Role = user.Role;
-                    _context.Update(user);
+                    _context.Update(usuarioUpdate);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
