@@ -13,9 +13,9 @@ namespace GABS20250319.AppWebMVC.Controllers
     [Authorize]
     public class BrandController : Controller
     {
-        private readonly Test20250319DbContext _context;
+        private readonly Test20250324DbContext _context;
 
-        public BrandController(Test20250319DbContext context)
+        public BrandController(Test20250324DbContext context)
         {
             _context = context;
         }

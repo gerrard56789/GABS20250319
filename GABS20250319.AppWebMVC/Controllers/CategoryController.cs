@@ -13,9 +13,9 @@ namespace GABS20250319.AppWebMVC.Controllers
     [Authorize]
     public class CategoryController : Controller
     {
-        private readonly Test20250319DbContext _context;
+        private readonly Test20250324DbContext _context;
 
-        public CategoryController(Test20250319DbContext context)
+        public CategoryController(Test20250324DbContext context)
         {
             _context = context;
         }

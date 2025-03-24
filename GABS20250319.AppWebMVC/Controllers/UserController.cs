@@ -18,9 +18,9 @@ namespace GABS20250319.AppWebMVC.Controllers
     [Authorize(Roles = "ADMINISTRADOR")]
     public class UserController : Controller
     {
-        private readonly Test20250319DbContext _context;
+        private readonly Test20250324DbContext _context;
 
-        public UserController(Test20250319DbContext context)
+        public UserController(Test20250324DbContext context)
         {
             _context = context;
         }

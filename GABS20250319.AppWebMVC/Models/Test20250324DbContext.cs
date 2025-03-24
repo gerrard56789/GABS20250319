@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GABS20250319.AppWebMVC.Models;
 
-public partial class Test20250319DbContext : DbContext
+public partial class Test20250324DbContext : DbContext
 {
-    public Test20250319DbContext()
+    public Test20250324DbContext()
     {
     }
 
-    public Test20250319DbContext(DbContextOptions<Test20250319DbContext> options)
+    public Test20250324DbContext(DbContextOptions<Test20250324DbContext> options)
         : base(options)
     {
     }
